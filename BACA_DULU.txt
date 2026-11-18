@@ -1,0 +1,7 @@
+ParkirKampus - versi kode sederhana
+
+File utama: index.html, styles.css, app.js
+Letakkan ketiga file dalam folder yang sama. Buka index.html lewat browser.
+
+Kode QR bawaan tetap disertakan. Bagian library QR dipertahankan agar fitur QR tetap berjalan.
+Login masih berupa simulasi lokal, belum terhubung ke SSO kampus.

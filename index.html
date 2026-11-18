@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#102b49">
+<meta name="description" content="Portal parkir mahasiswa untuk melihat lokasi motor, detail kendaraan, waktu parkir, dan QR keluar.">
+<title>ParkirKampus — Portal Mahasiswa</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<section id="loginScreen" class="login-screen" aria-label="Login mahasiswa">
+  <div class="login-panel">
+    <form id="loginForm" class="login-card" autocomplete="off">
+      <div class="eyebrow">ParkirKampus</div>
+      <h2>Masuk dengan Akun SSO</h2>
+      <p class="intro">Masuk menggunakan akun SSO kampus untuk melihat informasi parkir dan QR keluar.</p>
+      <div class="field">
+        <label for="sso">Akun SSO</label>
+        <div class="field-wrap"><input id="sso" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Masukkan akun SSO kampus" aria-describedby="demoNote" required></div>
+      </div>
+      <div class="field">
+        <label for="ssoPassword">Password</label>
+        <div class="field-wrap password-wrap">
+          <input id="ssoPassword" name="password" type="password" autocomplete="current-password" placeholder="Masukkan password" aria-describedby="demoNote" required>
+          <button type="button" class="password-toggle" id="toggleSsoPassword" aria-label="Tampilkan password" aria-pressed="false">Lihat</button>
+        </div>
+      </div>
+      <div class="login-options">
+        <label class="remember"><input type="checkbox" id="rememberDevice" checked> Ingat sesi demo di tab ini</label>
+        <button type="button" class="text-link" id="forgotBtn">Bantuan SSO</button>
+      </div>
+      <button type="submit" class="primary-btn">Masuk <span aria-hidden="true">→</span></button>
+      <div class="login-error" id="loginError" role="alert" aria-live="polite"></div>
+      <div class="demo-note" id="demoNote"><b>Mode demo:</b> SSO kampus belum terhubung. Isi akun dan password demo untuk mencoba. Nama sapaan mengikuti akun SSO. <b>Jangan gunakan password SSO asli</b> karena data login tidak diverifikasi ke server kampus.</div>
+      <div class="login-help">Ada kendala masuk? <button type="button" id="loginHelpBtn">Hubungi petugas kampus</button></div>
+    </form>
+  </div>
+</section>
+
+<section id="appScreen" class="app-shell hidden">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">P</div>
+      <div><div class="brand-name">ParkirKampus</div><div class="brand-sub">Portal parkir mahasiswa</div></div>
+    </div>
+    <div class="top-actions">
+      <div class="profile" aria-label="Akun mahasiswa">
+        <div class="avatar" id="avatarInitial" aria-hidden="true">M</div>
+        <div class="profile-text"><b id="profileName">Mahasiswa</b><span id="profileAccount">Akun SSO</span></div>
+      </div>
+      <button class="logout" id="logoutBtn" type="button">Keluar</button>
+    </div>
+  </header>
+  <div class="demo-ribbon">MODE DEMO · DATA CONTOH</div>
+  <main class="layout">
+    <section id="campusHomeView" class="campus-home">
+      <div class="campus-home-heading">
+        <div class="eyebrow">Portal mahasiswa</div>
+        <h1 id="homeTitle" tabindex="-1">Halo, mahasiswa!</h1>
+        <p class="campus-home-intro">Cek lokasi motor dan siapkan akses keluar kampus dari sini.</p>
+      </div>
+      <div class="home-session-card">
+        <div class="home-session-icon" aria-hidden="true">🏍</div>
+        <div class="home-session-copy">
+          <span class="section-kicker">SESI PARKIR KAMU</span>
+          <strong id="homeParkingStatus">Motor kamu terparkir di C-024</strong>
+          <small id="homeVehicleSummary">Honda Vario 160 · L 1234 AB</small>
+        </div>
+        <div class="home-session-meta">
+          <span class="status-chip" id="homeSessionState" role="status" aria-live="polite">Aktif</span>
+          <strong id="homeDuration">01j 26m</strong>
+        </div>
+      </div>
+      <div class="app-feature-grid" aria-label="Empat fitur parkir kampus">
+        <button class="app-feature-card" type="button" data-feature="location" aria-label="Buka Lokasi Parkir">
+          <span class="app-feature-icon" aria-hidden="true"><svg viewBox="0 0 96 96"><path d="M48 84s27-25 27-47a27 27 0 1 0-54 0c0 22 27 47 27 47Z" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="round"/><circle cx="48" cy="37" r="9" fill="none" stroke="currentColor" stroke-width="7"/></svg></span>
+          <span class="app-feature-label">Lokasi Parkir</span>
+        </button>
+        <button class="app-feature-card" type="button" data-feature="motor" aria-label="Buka Info Kendaraan">
+          <span class="app-feature-icon" aria-hidden="true"><svg viewBox="0 0 96 96"><path d="M18 62h11l10-22h19l12 22h8" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M33 40h18l8 12H28" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="64" r="10" fill="none" stroke="currentColor" stroke-width="6"/><circle cx="72" cy="64" r="10" fill="none" stroke="currentColor" stroke-width="6"/><path d="M48 39l-5-9h13l6 9" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/></svg></span>
+          <span class="app-feature-label">Info Kendaraan</span>
+        </button>
+        <button class="app-feature-card" type="button" data-feature="time" aria-label="Buka Waktu Parkir dan Keluar">
+          <span class="app-feature-icon" aria-hidden="true"><svg viewBox="0 0 96 96"><circle cx="48" cy="48" r="31" fill="none" stroke="currentColor" stroke-width="7"/><path d="M48 29v21l15 9" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="app-feature-label">Waktu Parkir &amp;<br>Keluar</span>
+        </button>
+        <button class="app-feature-card" type="button" data-feature="qr" aria-label="Buka QR Keluar">
+          <span class="app-feature-icon" aria-hidden="true"><svg viewBox="0 0 96 96"><rect x="13" y="13" width="25" height="25" rx="2" fill="none" stroke="currentColor" stroke-width="7"/><rect x="58" y="13" width="25" height="25" rx="2" fill="none" stroke="currentColor" stroke-width="7"/><rect x="13" y="58" width="25" height="25" rx="2" fill="none" stroke="currentColor" stroke-width="7"/><path d="M58 58h10v10H58zm15 0h10v25H73m-15-5h10v5H58" fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="round"/></svg></span>
+          <span class="app-feature-label">QR Keluar</span>
+        </button>
+      </div>
+      <div class="campus-home-foot"><span>Ada kendala soal parkir?</span><button type="button" id="homeHelpBtn">Hubungi petugas</button></div>
+    </section>
+
+    <section id="featureDetailView" class="hidden" aria-labelledby="featurePageTitle">
+      <div class="feature-page-top">
+        <button id="backToAppsBtn" class="back-to-apps" type="button">← Beranda</button>
+        <div class="feature-page-heading"><h1 id="featurePageTitle" tabindex="-1">Lokasi Parkir</h1><p id="featurePageSubtitle">Informasi lokasi parkir kendaraan kamu di area kampus.</p></div>
+      </div>
+      <nav class="feature-switcher" aria-label="Navigasi fitur parkir">
+        <button type="button" data-open-feature="location" aria-pressed="true"><span aria-hidden="true">⌖</span><span>Lokasi</span></button>
+        <button type="button" data-open-feature="motor" aria-pressed="false"><span aria-hidden="true">🏍</span><span>Info Motor</span></button>
+        <button type="button" data-open-feature="time" aria-pressed="false"><span aria-hidden="true">◷</span><span>Waktu</span></button>
+        <button type="button" data-open-feature="qr" aria-pressed="false"><span aria-hidden="true">▦</span><span>QR Keluar</span></button>
+      </nav>
+
+      <section class="feature-section hidden" id="feature-location">
+        <div class="content-card">
+          <h2>Motor kamu diparkir di sini</h2><p class="muted">Cek area dan nomor slot tempat motor terakhir tercatat.</p>
+          <div class="detail-grid">
+            <div class="location-card">
+              <div class="map-head"><span>AREA PARKIR TIMUR</span><span>Denah parkiran</span></div>
+              <div class="parking-map" role="img" aria-label="Denah parkir zona A sampai D. Motor kamu berada di zona C, slot C-024.">
+                <div class="map-road road-h"></div><div class="map-road road-v"></div>
+                <div class="zone zone-a"><span class="zone-label">ZONA A</span><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i></div>
+                <div class="zone zone-b"><span class="zone-label">ZONA B</span><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i></div>
+                <div class="zone zone-c"><span class="zone-label">ZONA C · MOTOR</span><i class="slot"></i><i class="slot"></i><i class="slot selected"><span class="slot-number">024</span></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i></div>
+                <div class="zone zone-d"><span class="zone-label">ZONA D</span><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i></div><div class="pin"></div>
+              </div>
+              <div class="map-legend"><div class="legend-item"><i class="legend-swatch active"></i> Slot kendaraan kamu</div><div class="legend-item"><i class="legend-swatch"></i> Slot lainnya</div></div>
+            </div>
+            <div class="map-facts">
+              <div class="fact-box"><span>Area parkir</span><b>Parkiran Timur</b></div>
+              <div class="fact-box"><span>Zona</span><b>Zona C · Area Motor</b></div>
+              <div class="fact-box"><span>Nomor slot</span><b>C-024</b></div>
+              <div class="fact-box"><span>Patokan</span><b>Dekat gedung fakultas</b></div>
+            </div>
+          </div>
+          <p class="feature-note">Lokasi ini berdasarkan slot yang dicatat saat motor masuk. Ini bukan pelacakan GPS secara langsung.</p>
+        </div>
+      </section>
+
+      <section class="feature-section hidden" id="feature-motor">
+        <div class="content-card">
+          <h2>Motor yang kamu gunakan</h2><p class="muted">Pastikan detail kendaraan ini sesuai dengan motor yang kamu bawa ke kampus.</p>
+          <div class="vehicle-summary"><div class="vehicle-icon" aria-hidden="true">🏍️</div><div><b>Honda Vario 160</b><small>Sepeda motor · Warna hitam · <span id="plateSummary">L 1234 AB</span></small></div></div>
+          <div class="vehicle-details">
+            <div class="fact-box"><span>Jenis kendaraan</span><b>Sepeda motor</b></div><div class="fact-box"><span>Tipe motor</span><b>Skuter matik</b></div>
+            <div class="fact-box"><span>Merek</span><b>Honda</b></div><div class="fact-box"><span>Model</span><b>Vario 160</b></div>
+            <div class="fact-box"><span>Warna</span><b>Hitam</b></div><div class="fact-box"><span>Nomor polisi</span><b id="plateDetail">L 1234 AB</b></div>
+            <div class="fact-box"><span>Lokasi terakhir</span><b>Zona C · Slot C-024</b></div><div class="fact-box"><span>Status kendaraan</span><b id="motorStatus">Masih terparkir</b></div>
+          </div>
+          <p class="feature-note">Kendaraan dan nomor polisi di halaman ini adalah data contoh yang bisa disesuaikan dengan data kampus.</p>
+        </div>
+      </section>
+
+      <section class="feature-section hidden" id="feature-time">
+        <div class="content-card">
+          <h2>Catatan waktu parkir</h2><p class="muted">Lihat kapan motor masuk, berapa lama terparkir, dan kapan keluar.</p>
+          <div class="time-grid">
+            <div class="time-card"><span>WAKTU MASUK</span><b id="timeEntry">08:12</b><small id="timeEntryDate">Hari ini · WIB</small></div>
+            <div class="time-card"><span>DURASI PARKIR</span><b id="timeDuration">01j 26m</b><small>Sejak motor masuk</small></div>
+            <div class="time-card"><span>WAKTU KELUAR</span><b id="timeExit">Belum</b><small id="timeExitDate">Akan tercatat saat QR divalidasi</small></div>
+          </div>
+          <div class="timeline">
+            <div class="timeline-item"><b>Kendaraan masuk</b><small id="timelineEntry">Hari ini · Gerbang Timur</small></div>
+            <div class="timeline-item pending" id="exitTimeline"><b id="timelineExitTitle">Motor masih terparkir</b><small id="timelineExit">Waktu keluar akan tercatat setelah QR divalidasi di gerbang.</small></div>
+          </div>
+          <p class="feature-note">Waktu keluar pada demo dicatat saat kamu menekan tombol simulasi validasi QR.</p>
+        </div>
+      </section>
+
+      <section class="feature-section hidden" id="feature-qr">
+        <div class="qr-feature-panel">
+          <div class="qr-feature-image-wrap" id="qrActive"><img id="qrImage" alt="QR Code demo untuk akses keluar kampus"></div>
+          <div class="qr-feature-copy">
+            <div class="qr-validation-state" id="qrValidationState" role="status" tabindex="-1" aria-live="polite">● QR MASIH AKTIF</div>
+            <h2>QR untuk keluar kampus</h2>
+            <p>Tunjukkan QR ini ke petugas atau pemindai di gerbang saat akan pulang. QR hanya berlaku untuk sesi parkir demo ini.</p>
+            <div class="qr-ticket-code" id="qrTicketCode">PK-20261118-001</div>
+            <div class="qr-feature-actions">
+              <button type="button" id="enlargeQrBtn">Perbesar QR</button>
+              <button type="button" id="copyQrBtn">Salin kode tiket</button>
+              <button type="button" class="validate" id="validateBtn">Simulasikan validasi keluar</button>
+            </div>
+          </div>
+          <div class="qr-feature-image-wrap hidden" id="qrInactive"><p>Sesi parkir selesai.<br>QR sudah tidak berlaku.</p></div>
+        </div>
+        <div id="exitDone" class="exit-done hidden" role="status" aria-live="polite">✓ <b>Validasi keluar berhasil.</b> Waktu keluar sudah tercatat pada sesi parkir ini.<button type="button" id="resetDemoBtn">Mulai sesi parkir baru</button></div>
+        <p class="feature-note">Ini QR demo yang dibuat di perangkat. Untuk gerbang sungguhan, QR perlu berisi token sekali pakai dari server kampus dan divalidasi oleh sistem gerbang.</p>
+      </section>
+      <div class="footer">ParkirKampus · Teman perjalananmu di area kampus</div>
+    </section>
+  </main>
+</section>
+
+<div class="modal-backdrop qr-bright hidden" id="qrModal" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle" aria-describedby="qrModalDescription" tabindex="-1">
+  <div class="modal qr-modal">
+    <h3 id="qrModalTitle">QR Code akses keluar</h3>
+    <p id="qrModalDescription">Tunjukkan kode ini ke petugas atau pemindai gerbang keluar kampus.</p>
+    <img id="modalQrImage" alt="QR Code akses keluar ukuran besar">
+    <div class="modal-code" id="modalTicketCode">PK-20261118-001</div>
+    <div class="modal-actions"><button type="button" id="closeModalBtn">Tutup</button><button type="button" class="confirm" id="modalValidateBtn">Simulasikan validasi</button></div>
+  </div>
+</div>
+<div class="modal-backdrop hidden" id="logoutModal" role="dialog" aria-modal="true" aria-labelledby="logoutModalTitle" aria-describedby="logoutModalDescription" tabindex="-1">
+  <div class="modal">
+    <h3 id="logoutModalTitle">Keluar dari ParkirKampus?</h3>
+    <p id="logoutModalDescription">Sesi demo di tab ini akan diakhiri. Kamu bisa masuk lagi kapan saja.</p>
+    <div class="modal-actions"><button type="button" id="cancelLogoutBtn">Batal</button><button type="button" class="confirm" id="confirmLogoutBtn">Ya, keluar</button></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+
+
+  <script src="app.js"></script>
+</body>
+</html>
